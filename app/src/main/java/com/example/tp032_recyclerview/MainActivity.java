@@ -2,6 +2,9 @@ package com.example.tp032_recyclerview;
 
 import android.os.Bundle;
 
+import com.example.tp032_recyclerview.adapter.WordListAdapter;
+import com.example.tp032_recyclerview.data.Datasource;
+import com.example.tp032_recyclerview.model.Word;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,15 +16,26 @@ import com.example.tp032_recyclerview.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.LinkedList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private WordListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Datasource mDatasource = new Datasource();
+        LinkedList<Word> mWordList = mDatasource.loadWords();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        // Créer une instance de l'adaptateur en passant la liste des mots comme paramètre
+        mAdapter = new WordListAdapter(mWordList);
+        // Lier RecyclerView à son adaptateur
+        // binding.contentMain.recyclerview remplace findViewById(R.id.recyclerview)
+        binding.contentMain.recyclerview.setAdapter(mAdapter);
+        binding.contentMain.recyclerview.setHasFixedSize(true);
+
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
