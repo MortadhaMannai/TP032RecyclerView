@@ -44,9 +44,16 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
+                int wordListSize = mWordList.size();
+
+                // Ajoutez un nouveau mot à la liste de mots.
+                mWordList.addLast(new Word("+ Word " + wordListSize));
+
+                // Notifiez l'adaptateur qu'une nouvelle donnée a été insérée.
+                binding.contentMain.recyclerview.getAdapter().notifyItemInserted(wordListSize);
+
+                // Faites défiler jusqu'en bas
+                binding.contentMain.recyclerview.smoothScrollToPosition(wordListSize);
             }
         });
     }
